@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12-24 ПИ | Программная Инженерия</title>
+    <style>
+        :root {
+            --bg-color: #0a0f1d;
+            --card-color: #11192d;
+            --border-color: #1e2942;
+            --neon: #00ffcc;
+            --purple: #9333ea;
+            --blue: #3b82f6;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 0);
+            background-size: 24px 24px;
+            selection-background-color: var(--neon);
+            selection-color: #000;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 15, 29, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--neon), var(--blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        .logo-text span {
+            display: block;
+        }
+
+        .logo-title {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--neon);
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            font-family: var(--font-mono);
+            font-size: 14px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--neon);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--card-color);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: var(--neon);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, var(--neon), var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: 0 auto 40px auto;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .hero p span {
+            color: var(--neon);
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #00e6bc;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--card-color);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(0, 255, 204, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Main Grid & Cards */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Terminal Section */
+        .terminal-section {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .terminal-box {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.1);
+        }
+
+        .terminal-topbar {
+            background: #0d1322;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .terminal-screen {
+            background: #080c16;
+            padding: 24px;
+            height: 280px;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .terminal-input-area {
+            background: #0d1322;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--neon);
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--text-main);
+            width: 100%;
+        }
+
+        .terminal-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: center;
+        }
+
+        .t-btn {
+            padding: 6px 12px;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .t-btn:hover {
+            border-color: var(--neon);
+            color: var(--text-main);
+        }
+
+        .t-btn.danger:hover {
+            border-color: #ff5f56;
+            color: #ff5f56;
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media(max-width: 900px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .about-text h3 {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .about-tag {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--neon);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .about-text p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            font-family: var(--font-mono);
+        }
+
+        @media(max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--neon);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .goals-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-top: 16px;
+        }
+
+        .goals-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .goals-list li::before {
+            content: "✓";
+            color: var(--neon);
+            font-weight: 700;
+        }
+
+        /* Schedule Section */
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .day-tabs {
+            display: flex;
+            gap: 8px;
+            font-family: var(--font-mono);
+        }
+
+        .day-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .day-btn.active {
+            background: var(--neon);
+            color: #000;
+            font-weight: 700;
+            border-color: var(--neon);
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-family: var(--font-mono);
+        }
+
+        .schedule-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .schedule-item:hover {
+            border-color: rgba(0, 255, 204, 0.4);
+        }
+
+        .sch-time {
+            padding: 6px 12px;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--neon);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .sch-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        .sch-room {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .sch-type {
+            padding: 4px 10px;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Tech Stack Grid */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .stack-card {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .stack-card:hover {
+            border-color: rgba(0, 255, 204, 0.4);
+        }
+
+        .stack-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+
+        .stack-card h4 {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .stack-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-family: var(--font-mono);
+        }
+
+        .tag {
+            padding: 3px 8px;
+            background: var(--bg-color);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--neon);
+        }
+
+        /* Board Section */
+        .board-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        @media(max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        input, select, textarea {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--neon);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .messages-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-family: var(--font-mono);
+        }
+
+        .message-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .msg-author {
+            color: var(--neon);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .msg-tag {
+            padding: 2px 8px;
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .msg-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .msg-text {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .delete-btn:hover {
+            color: #ff5f56;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            background: rgba(17, 25, 45, 0.5);
+            padding: 30px 0;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .build-badge {
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media(max-width: 768px) {
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo-box">
+                <div class="logo-icon">&lt;/&gt;</div>
+                <div class="logo-text">
+                    <span class="logo-title">12-24 ПИ</span>
+                    <span class="logo-subtitle">Программная Инженерия</span>
+                </div>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#about">О группе</a></li>
+                    <li><a href="#terminal">Терминал</a></li>
+                    <li><a href="#schedule">Расписание</a></li>
+                    <li><a href="#stack">Стек</a></li>
+                    <li><a href="#board">Доска</a></li>
+                </ul>
+            </nav>
+
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Статус: В сети</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero container">
+        <div class="hero-tag">
+            <span>⚡ Группа разработки программного обеспечения</span>
+        </div>
+        <h1>Код, Алгоритмы и <span>Инженерная Мысль</span></h1>
+        <p>Добро пожаловать на официальный портал нашей группы <span>12-24 ПИ</span>. Строим будущее на C++, Python, Linux и чистой логике.</p>
+        <div class="hero-buttons">
+            <a href="#terminal" class="btn btn-primary">Запустить Терминал</a>
+            <a href="#schedule" class="btn btn-secondary">Расписание пар</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Terminal Section -->
+        <section id="terminal" class="terminal-section">
+            <div class="section-header">
+                <h2>Интерактивная консоль 12-24 ПИ</h2>
+                <p>Введите команду или выберите подсказку ниже</p>
+            </div>
+
+            <div class="terminal-box">
+                <div class="terminal-topbar">
+                    <div class="terminal-dots">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <div class="terminal-title">bash — pi1224@linux-mint:~</div>
+                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--neon);">UTF-8</div>
+                </div>
+
+                <div id="terminal-output" class="terminal-screen">
+                    <div>Добро пожаловать в оболочку группы 12-24 ПИ v2.6.</div>
+                    <div>Введите <span style="color:var(--neon)">help</span> для вывода доступных команд.</div>
+                    <div style="color:var(--neon);">&gt; system.init() completed successfully.</div>
+                </div>
+
+                <div class="terminal-input-area">
+                    <span class="terminal-prompt">pi1224@node:~$</span>
+                    <input id="terminal-input" type="text" class="terminal-input" placeholder="введите команду (help, members, stack, uptime, clear)..." autofocus>
+                </div>
+            </div>
+
+            <div class="terminal-btns">
+                <button class="t-btn" onclick="runCommand('help')">help</button>
+                <button class="t-btn" onclick="runCommand('members')">members</button>
+                <button class="t-btn" onclick="runCommand('stack')">stack</button>
+                <button class="t-btn" onclick="runCommand('os')">os</button>
+                <button class="t-btn" onclick="runCommand('quote')">quote</button>
+                <button class="t-btn danger" onclick="runCommand('clear')">clear</button>
+            </div>
+        </section>
+
+        <!-- About & Goals -->
+        <section id="about" class="about-grid">
+            <div class="card about-text">
+                <h3>О нашей группе</h3>
+                <span class="about-tag">Специальность: 09.03.04 Программная инженерия</span>
+                <p>Мы — студенты 3-го курса группы <strong>12-24 ПИ</strong>. Наша цель — не просто писать код, а создавать надежные, масштабируемые и эффективные программные решения. Изучаем архитектуру ПО, низкоуровневое программирование, базы данных и системное администрирование.</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">3 Курс</div>
+                        <div class="stat-label">Этап обучения</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color:var(--blue)">Linux / Win</div>
+                        <div class="stat-label">Окружение</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color:#c084fc">C++ / Py</div>
+                        <div class="stat-label">Языки</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                    <h3 style="font-family:var(--font-mono); font-size:18px; margin-bottom:16px;">Цели семестра</h3>
+                    <ul class="goals-list">
+                        <li>Успешная защита курсовых проектов</li>
+                        <li>Освоение алгоритмических паттернов</li>
+                        <li>Командная разработка на Git & CI/CD</li>
+                        <li>Настройка серверной инфраструктуры</li>
+                    </ul>
+                </div>
+                <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border-color);">
+                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">Девиз группы:</div>
+                    <div style="font-family:var(--font-mono); font-size:12px; color:var(--neon); margin-top:4px;">"Работает? Не трогай! Написано на C++? Работает идеально."</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="card">
+            <div class="schedule-header">
+                <div>
+                    <h2 style="font-family:var(--font-mono); font-size:22px; margin-bottom:4px;">Расписание занятий</h2>
+                    <p style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">Актуальное расписание лекций и лабораторных</p>
+                </div>
+                <div class="day-tabs">
+                    <button class="day-btn active" onclick="switchDay('mon')">Пн</button>
+                    <button class="day-btn" onclick="switchDay('tue')">Вт</button>
+                    <button class="day-btn" onclick="switchDay('wed')">Ср</button>
+                    <button class="day-btn" onclick="switchDay('thu')">Чт</button>
+                    <button class="day-btn" onclick="switchDay('fri')">Пт</button>
+                </div>
+            </div>
+
+            <div id="schedule-content" class="schedule-list">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section id="stack" class="stack-grid">
+            <div class="stack-card">
+                <div class="stack-icon">&lt;/&gt;</div>
+                <h4>Языки программирования</h4>
+                <p>C++, Python, JavaScript, Assembly (FASM/MASM), Kotlin</p>
+                <div class="tags">
+                    <span class="tag">C++</span><span class="tag">Python</span><span class="tag">JS</span><span class="tag">Kotlin</span>
+                </div>
+            </div>
+
+            <div class="stack-card">
+                <div class="stack-icon" style="background:rgba(16,185,129,0.1); color:#10b981;">⎈</div>
+                <h4>Системы и ОС</h4>
+                <p>Linux Mint (Cinnamon), Debian, ALT Linux, Ubuntu Server, Docker</p>
+                <div class="tags">
+                    <span class="tag" style="color:#10b981">Linux Mint</span><span class="tag" style="color:#10b981">Debian</span><span class="tag" style="color:#10b981">Docker</span>
+                </div>
+            </div>
+
+            <div class="stack-card">
+                <div class="stack-icon" style="background:rgba(147,51,234,0.1); color:#c084fc;">⚡</div>
+                <h4>Робототехника & IoT</h4>
+                <p>Arduino, Webots, Tinkercad Circuits, TRIK Studio</p>
+                <div class="tags">
+                    <span class="tag" style="color:#c084fc">Arduino</span><span class="tag" style="color:#c084fc">Webots</span><span class="tag" style="color:#c084fc">Tinkercad</span>
+                </div>
+            </div>
+
+            <div class="stack-card">
+                <div class="stack-icon" style="background:rgba(234,179,8,0.1); color:#eab308;">⚙</div>
+                <h4>Инструменты</h4>
+                <p>Qt, Visual Studio, Git, OBS Studio, FFmpeg, Android Studio</p>
+                <div class="tags">
+                    <span class="tag" style="color:#eab308">Git</span><span class="tag" style="color:#eab308">Qt / VS</span><span class="tag" style="color:#eab308">FFmpeg</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Board -->
+        <section id="board" class="card">
+            <div style="margin-bottom:24px;">
+                <h2 style="font-family:var(--font-mono); font-size:22px; margin-bottom:4px;">Доска заметок и объявлений</h2>
+                <p style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">Сохраняется локально в вашем браузере</p>
+            </div>
+
+            <form id="board-form" class="board-form">
+                <div class="form-row">
+                    <input type="text" id="author-input" placeholder="Ваше имя / ник" required>
+                    <select id="tag-input">
+                        <option value="Объявление">🔔 Объявление</option>
+                        <option value="Учеба">📚 Учеба</option>
+                        <option value="Проект">💻 Проект</option>
+                        <option value="Юмор">☕ Юмор</option>
+                    </select>
+                </div>
+                <textarea id="message-input" placeholder="Текст заметки или объявления..." required></textarea>
+                <div style="display:flex; justify-content:flex-end;">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 13px;">Опубликовать</button>
+                </div>
+            </form>
+
+            <div id="messages-container" class="messages-container">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>© 2026 Группа <span style="color:var(--neon)">12-24 ПИ</span>. Программная Инженерия.</div>
+            <div class="build-badge">
+                <span>●</span> Build v2.6.0-stable (Fast Load)
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Terminal Logic
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalInput = document.getElementById('terminal-input');
+
+        const commands = {
+            help: `Доступные команды:\n  - members  : Информация о составе группы\n  - stack    : Используемые технологии и инструменты\n  - os       : Предпочитаемые операционные системы\n  - quote    : Мудрость программиста\n  - uptime   : Время беспрерывной работы группы\n  - clear    : Очистить экран терминала`,
+            members: `Группа: 12-24 ПИ (Программная инженерия, 3 курс)\nАктивный состав разработчиков и инженеров.`,
+            stack: `Технологический стек 12-24 ПИ:\n- Языки: C++, Python, JavaScript, Kotlin, FASM/MASM\n- ОС: Linux Mint (Cinnamon), Debian, ALT Linux, Ubuntu\n- Инструменты: Git, Docker, Qt, Visual Studio, FFmpeg, OBS`,
+            os: `Выбор редакции ОС: Linux Mint с окружением Cinnamon — максимальная продуктивность!`,
+            quote: `"Код — это поэзия, которую компилятор превращает в электрические импульсы."`,
+            uptime: `Группа 12-24 ПИ функционирует: 3 года упорного труда и успешных компиляций.`
+        };
+
+        function appendToTerminal(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            terminalOutput.appendChild(div);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function runCommand(cmd) {
+            const cleanCmd = cmd.trim().toLowerCase();
+            appendToTerminal(`> pi1224@node:~$ ${cleanCmd}`);
+            
+            if (cleanCmd === 'clear') {
+                terminalOutput.innerHTML = '';
+                return;
+            }
+
+            if (commands[cleanCmd]) {
+                appendToTerminal(commands[cleanCmd]);
+            } else if (cleanCmd !== '') {
+                appendToTerminal(`Команда не найдена: ${cleanCmd}. Введите 'help' для справки.`);
+            }
+        }
+
+        terminalInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                runCommand(terminalInput.value);
+                terminalInput.value = '';
+            }
+        });
+
+        // Schedule Data & Logic
+        const scheduleData = {
+            mon: [
+                { time: '08:30 - 10:00', title: 'Архитектура программного обеспечения', room: 'Ауд. 402', type: 'Лекция' },
+                { time: '10:15 - 11:45', title: 'Объектно-ориентированное проектирование (C++)', room: 'Лаб. 210', type: 'Практика' },
+                { time: '12:00 - 13:30', title: 'Базы данных и SQL', room: 'Ауд. 315', type: 'Лекция' }
+            ],
+            tue: [
+                { time: '08:30 - 10:00', title: 'Системное администрирование Linux', room: 'Лаб. 212', type: 'Практика' },
+                { time: '10:15 - 11:45', title: 'Сети и телекоммуникации', room: 'Ауд. 308', type: 'Лекция' },
+                { time: '12:00 - 13:30', title: 'Алгоритмы и структуры данных', room: 'Ауд. 402', type: 'Лекция' }
+            ],
+            wed: [
+                { time: '08:30 - 10:00', title: 'Веб-разработка (Frontend / Backend)', room: 'Лаб. 210', type: 'Практика' },
+                { time: '10:15 - 11:45', title: 'Низкоуровневое программирование (Assembly)', room: 'Лаб. 212', type: 'Практика' },
+                { time: '12:00 - 13:30', title: 'Информационная безопасность', room: 'Ауд. 305', type: 'Лекция' }
+            ],
+            thu: [
+                { time: '08:30 - 10:00', title: 'Разработка мобильных приложений (Kotlin)', room: 'Лаб. 210', type: 'Практика' },
+                { time: '10:15 - 11:45', title: 'Робототехника и микроконтроллеры', room: 'Лаб. 104', type: 'Практика' },
+                { time: '12:00 - 13:30', title: 'Тестирование и верификация ПО', room: 'Ауд. 402', type: 'Лекция' }
+            ],
+            fri: [
+                { time: '08:30 - 10:00', title: 'Управление IT-проектами (Agile/Scrum)', room: 'Ауд. 315', type: 'Лекция' },
+                { time: '10:15 - 11:45', title: 'Командный курсовой проект (DevOps / Git)', room: 'Лаб. 212', type: 'Практика' },
+                { time: '12:00 - 13:30', title: 'Консультации по дипломным работам', room: 'Ауд. 402', type: 'Семинар' }
+            ]
+        };
+
+        function switchDay(day) {
+            document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const container = document.getElementById('schedule-content');
+            container.innerHTML = '';
+
+            scheduleData[day].forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'schedule-item';
+                div.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <div class="sch-time">${item.time}</div>
+                        <div>
+                            <div class="sch-title">${item.title}</div>
+                            <div class="sch-room">${item.room}</div>
+                        </div>
+                    </div>
+                    <div class="sch-type">${item.type}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Message Board Logic
+        const boardForm = document.getElementById('board-form');
+        const authorInput = document.getElementById('author-input');
+        const tagInput = document.getElementById('tag-input');
+        const messageInput = document.getElementById('message-input');
+        const messagesContainer = document.getElementById('messages-container');
+
+        let messages = JSON.parse(localStorage.getItem('pi1224_messages')) || [
+            { author: 'Староста', tag: 'Объявление', text: 'Не забываем сдавать лабораторные работы по C++ до пятницы!', date: '09.10.2026, 14:00' },
+            { author: 'Борис Юрьевич', tag: 'Учеба', text: 'Готовимся к защите курсовых проектов. Проверьте репозитории на GitHub.', date: '08.10.2026, 10:30' }
+        ];
+
+        function saveMessages() {
+            localStorage.setItem('pi1224_messages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            messagesContainer.innerHTML = '';
+            if (messages.length === 0) {
+                messagesContainer.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Пока нет заметок. Будьте первыми!</div>';
+                return;
+            }
+
+            messages.forEach((msg, index) => {
+                const card = document.createElement('div');
+                card.className = 'message-card';
+                card.innerHTML = `
+                    <div class="message-header">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span class="msg-author">${escapeHtml(msg.author)}</span>
+                            <span class="msg-tag">${escapeHtml(msg.tag)}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="msg-date">${escapeHtml(msg.date)}</span>
+                            <button class="delete-btn" onclick="deleteMessage(${index})">✕ Удалиь</button>
+                        </div>
+                    </div>
+                    <div class="msg-text">${escapeHtml(msg.text)}</div>
+                `;
+                messagesContainer.appendChild(card);
+            });
+        }
+
+        boardForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ru-RU') + ', ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            
+            messages.unshift({
+                author: authorInput.value,
+                tag: tagInput.value,
+                text: messageInput.value,
+                date: dateStr
+            });
+
+            saveMessages();
+            loadMessages();
+            messageInput.value = '';
+        });
+
+        function deleteMessage(index) {
+            messages.splice(index, 1);
+            saveMessages();
+            loadMessages();
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            switchDay('mon');
+            loadMessages();
+        });
+    </script>
+</body>
+</html>
